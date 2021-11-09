@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Data
+uniprot_human.fasta
+uniprot_arabidopsis.fasta
