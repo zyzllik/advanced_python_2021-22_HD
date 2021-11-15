@@ -1,9 +1,7 @@
 import numpy as np
 import pandas as pd
-import numpy as np
 import plotly.graph_objects as go
 from collections import deque
-import matplotlib.pyplot as plt
 from pathlib import Path
 
 class Protein:
