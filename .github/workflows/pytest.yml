@@ -3,6 +3,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
 
+  push: # for demonstration, normally nicht emfohlen
+    branches:
+      - main
+      - master
 jobs:
   build:
     name: Run Python Tests
