@@ -25,22 +25,27 @@ class Protein:
         return self._metrics
     
     def get_x_values_plot(self):
+        sequence_l = list(self.sequence)
         return list(np.arange(len(sequence_l)))
 
-    def get_y_values_plot(self, metric, window_size):
-        sequence_l = list(self.sequence)
+    def find_metric_values(self, metric = "hydropathy"):
         metric_values = []
-        values_to_plot = []
-        
-        for aa in list(sequence_l):
+        for aa in list(self.sequence):
             metric_values.append(self.metrics[metric][aa])
+        return metric_values
 
-        sliding_window = deque([], maxlen=window_size)
+    def get_y_values_plot(self, metric ="hydropathy", window_size = 5):
 
-        for value in metric_values:
-            sliding_window.append(value)
-            values_to_plot.append(np.mean(sliding_window))
-            return values_to_plot
+        metric_values = self.find_metric_values(metric)
+        window = deque([], maxlen = window_size)
+
+        mean_values = []
+
+        for metric_value in metric_values:
+            window.append(metric_value)
+            mean_values.append(np.mean(window))
+
+        return mean_values
 
     def plot(self, metric ="hydropathy", window_size = 1):
             
@@ -55,6 +60,11 @@ class Protein:
         ]
 
         fig = go.Figure(data=data)
-        fig.update_layout(title=self.name, template = 'plotly_white')
+        fig.update_layout(title=self.name, 
+            template = 'plotly_white')
         
         return fig
+
+prot = Protein('Test', 'MDIQMANNFTPPSATPQGNDCDLYAHHSTARIVMPLHYSLVFIIGLVGNLLALVVIVQNRKKINSTTLYSTNLVISDILFTTALPTRIAYYAMGFDWRIGDALCRITALVFYINTYAGVNFMTCLSIDRFIAVVHPLRYNKIKRIEHAKGVCIFVWILVFAQTLPLLINPMSKQEAERITCMEYPNFEETKSLPWILLGACFIGYVLPLIIILICYSQICCKLFRTAKQNPLTEKSGVNKKALNTIILIIVVFVLCFTPYHVAIIQHMIKKLRFSNFLECSQRHSFQISLHFTVCLMNFNCCMDPFIYFFACKGYKRKVMRMLKRQVSVSISSAVKSAPEENSREMTETQMMIHSKSSNGK')
+figure = prot.plot(window_size=10)
+figure.show()
